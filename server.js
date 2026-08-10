@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import Router from "./routes/contactRoutes.js";
 import errorHandler from "./middleware/errorhandler.js";
 import connectDB from "./config/db.js";
+import router from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/contacts", Router);
+app.use("/api/users", router);
 
 // Error Handler
 app.use(errorHandler);
