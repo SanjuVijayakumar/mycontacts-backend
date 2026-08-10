@@ -1,18 +1,35 @@
-const express = require("express")
-const dotenv = require("dotenv").config();
-const router = require("./routes/contactRoutes");
-const errorHandler = require("./middleware/errorhandler");
+import dns from "dns";
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
+import express from "express";
+import dotenv from "dotenv";
+import Router from "./routes/contactRoutes.js";
+import errorHandler from "./middleware/errorhandler.js";
+import connectDB from "./config/db.js";
+
+dotenv.config();
 
 const app = express()
-
 const PORT = process.env.PORT || 5000;
 
 // middleware
 app.use(express.json());
-app.use("/api/contacts", router);
+
+// Routes
+app.use("/api/contacts", Router);
+
+// Error Handler
 app.use(errorHandler);
 
-app.listen(PORT, ()=> {
-    console.log(`Server is running on port ${PORT}`);
-    
+// Connect MongoDB
+connectDB()
+.then(() => {
+    app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
 })
+
+// app.listen(PORT, ()=> {
+//     console.log(`Server is running on port ${PORT}`);
+    
+// })
